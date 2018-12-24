@@ -1,1 +1,3 @@
-Nathan's Little Hangman
+#Nathan's Little Hangman
+
+Simple game based on svgjs
