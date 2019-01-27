@@ -1163,7 +1163,7 @@
                         .loop(true, true);
                 },
                 "drawTextBoxes": function (numOfBoxes) {
-                    var x = 100, y = 580, height = 100, width = 70;
+                    var x = 5, y = 580, height = 100, width = 70;
                     for (var i = 0; i < numOfBoxes; i++) {
                         var polyline = canvas.polyline([[x, y], [x + width, y], [x + width, y - height], [x, y - height], [x, y]]);
                         polyline.fill('none');
@@ -1173,7 +1173,7 @@
                 },
                 "drawLetter": function (letter, box) {
                     var text = canvas.text(letter.toUpperCase());
-                    text.move(105 + (box - 1) * 92, 460).font({
+                    text.move(10 + (box - 1) * 92, 460).font({
                         fill: '#2b2ba0',
                         family: 'Inconsolata',
                         size: 72
