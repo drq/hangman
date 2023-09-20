@@ -1053,7 +1053,7 @@
                     title.move(0, 0).font({
                         fill: '#5b1ea0',
                         family: 'Inconsolata',
-                        size: 60
+                        size: 50
                     });
                     title.click(function () {
                         Hangman.init();
@@ -1168,7 +1168,7 @@
                         .loop(true, true);
                 },
                 "drawTextBoxes": function (numOfBoxes) {
-                    var x = 5, y = 580, height = 100, width = 70;
+                    var x = 5, y = 580, height = numOfBoxes < 6 ? 100 : 80, width = numOfBoxes < 6 ? 70 : 53;
                     for (var i = 0; i < numOfBoxes; i++) {
                         var polyline = canvas.polyline([[x, y], [x + width, y], [x + width, y - height], [x, y - height], [x, y]]);
                         polyline.fill('none');
@@ -1176,18 +1176,20 @@
                         x += width + 20;
                     }
                 },
-                "drawLetter": function (letter, box) {
+                "drawLetter": function (letter, box, wordLength) {
                     var text = canvas.text(letter.toUpperCase());
-                    text.move(10 + (box - 1) * 92, 460).font({
+                    const x = wordLength < 6 ? 10 + (box - 1) * 92 : 10 + (box - 1) * 75;
+                    const y = wordLength < 6 ? 480 : 500;
+                    text.move(x, y).font({
                         fill: '#2b2ba0',
                         family: 'Inconsolata',
-                        size: 72
+                        size: wordLength < 6 ? 72 : 54
                     });
                     return text;
                 },
                 "revealAnswer": function () {
                     for (var i = 0, len = word.length; i < len; i++) {
-                        Hangman.drawLetter(word[i], i + 1);
+                        Hangman.drawLetter(word[i], i + 1, word.length);
                     }
                 },
                 "onKeyPress": function (event) {
@@ -1196,7 +1198,7 @@
                         var match = false;
                         for (var i = 0, length = word.length; i < length; i++) {
                             if (word[i].toUpperCase() === keyName) {
-                                texts.push(Hangman.drawLetter(keyName, i + 1));
+                                texts.push(Hangman.drawLetter(keyName, i + 1, word.length));
                                 rightCount++;
                                 match = true;
                             }
