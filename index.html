@@ -1019,7 +1019,7 @@
                 "yourself"
             ];
 
-            var canvas = SVG('canvas').size(800, 700);
+            var canvas = SVG('canvas').size(800, 900);
             // Draw Hangman
             var hangmanStyle = {color: '#000', width: 4, linecap: 'round', linejoin: 'round'};
             var hangman = [];
@@ -1070,8 +1070,9 @@
                     // Draw Helptext
                     for (var i = 0, len = letters.length; i < len; i++) {
                         var letter = letters[i];
-                        var x = i <= 12 ? i * 60 : (i - 13) * 60;
-                        var y = i <= 12 ? 600 : 650;
+                        var group = Math.floor(i/6);
+                        var x = (i - group * 6) * 120;
+                        var y = 600 + group * 50;
                         helpTexts[letter] = canvas.text(letter).move(x, y).font({
                             fill: '#2f5597',
                             family: 'Inconsolata',
@@ -1080,6 +1081,7 @@
                     }
 
                     document.addEventListener('keypress', Hangman.onKeyPress);
+                    document.addEventListener('touchend', Hangman.onKeyPress);
                 },
                 "clearHelpText": function (letter) {
                     helpTexts[letter].clear();
@@ -1187,7 +1189,7 @@
                 },
                 "onKeyPress": function (event) {
                     var keyName = event.key.toUpperCase();
-                    if (keyName.match(/[a-z]/i) && typedText.indexOf(keyName) == -1) {
+                    if (keyName.match(/[a-z]/i) && typedText.indexOf(keyName) === -1) {
                         var match = false;
                         for (var i = 0, length = word.length; i < length; i++) {
                             if (word[i].toUpperCase() === keyName) {
@@ -1202,11 +1204,11 @@
                         }
                         Hangman.clearHelpText(keyName);
                     }
-                    if (rightCount == word.length) {
+                    if (rightCount === word.length) {
                         Hangman.animateWin();
                         setTimeout(function(){ Hangman.init(); }, 5000);
                     }
-                    if (wrongCount == 9) {
+                    if (wrongCount === 9) {
                         Hangman.revealAnswer();
                         Hangman.animateHangman();
                         setTimeout(function(){ Hangman.init(); }, 5000);
