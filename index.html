@@ -1068,20 +1068,23 @@
                     Hangman.drawTextBoxes(word.length);
 
                     // Draw Helptext
+                    const groupSize = 5;
+
                     for (var i = 0, len = letters.length; i < len; i++) {
                         var letter = letters[i];
-                        var group = Math.floor(i/6);
-                        var x = (i - group * 6) * 120;
+                        var group = Math.floor(i/groupSize);
+                        var x = (i - group * groupSize) * 120;
                         var y = 600 + group * 50;
                         helpTexts[letter] = canvas.text(letter).move(x, y).font({
                             fill: '#2f5597',
                             family: 'Inconsolata',
                             size: 40
                         });
+                        helpTexts[letter].on('click', Hangman.onKeyPress);
+                        helpTexts[letter].on('touchend', Hangman.onKeyPress);
                     }
 
                     document.addEventListener('keypress', Hangman.onKeyPress);
-                    document.addEventListener('touchend', Hangman.onKeyPress);
                 },
                 "clearHelpText": function (letter) {
                     helpTexts[letter].clear();
@@ -1188,7 +1191,7 @@
                     }
                 },
                 "onKeyPress": function (event) {
-                    var keyName = event.key.toUpperCase();
+                    var keyName = (event?.currentTarget?.textContent ?? event?.key).toUpperCase();
                     if (keyName.match(/[a-z]/i) && typedText.indexOf(keyName) === -1) {
                         var match = false;
                         for (var i = 0, length = word.length; i < length; i++) {
